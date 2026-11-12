@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TGCF</title>
+<meta name="theme-color" content="#7e22ce">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TGCF">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="icons/favicon.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>
+  :root{
+    --bg:#111827; --card:#1f2937; --input:#2d3748; --orange:#f97316;
+    --purple:#a78bfa; --text:#f9fafb; --muted:#6b7280; --red:#ef4444; --green:#22c55e;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;background:var(--bg);color:var(--text);
+    font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  header{background:linear-gradient(90deg,#7e22ce,#f97316);text-align:center;
+    padding:calc(env(safe-area-inset-top) + 28px) 16px 24px}
+  header h1{margin:0;font-size:2rem;font-weight:900;letter-spacing:.08em}
+  header p{margin:6px 0 0;font-weight:700;letter-spacing:.06em;opacity:.9}
+  main{max-width:520px;margin:0 auto;padding:20px 16px 190px}
+  .card{background:var(--card);border-left:5px solid var(--orange);border-radius:14px;
+    padding:18px 18px 20px;margin-bottom:18px}
+  .card.off{opacity:.45}
+  label,.title{display:block;color:var(--purple);font-weight:800;text-transform:uppercase;
+    letter-spacing:.04em;font-size:.95rem;margin:0 0 10px}
+  .head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+  .head .title{margin:0}
+  .pts{background:var(--orange);color:#fff;font-weight:900;border-radius:8px;padding:5px 12px;
+    white-space:nowrap;font-size:1.05rem}
+  .pts.fail{background:var(--red)}
+  select,input{width:100%;background:var(--input);color:var(--text);border:0;border-radius:10px;
+    font-size:1.35rem;padding:14px 16px;font-family:inherit;outline:none;text-align:center;
+    -moz-appearance:textfield;appearance:none}
+  select{text-align:left;font-weight:600;background-image:linear-gradient(45deg,transparent 50%,#cbd5e1 50%),linear-gradient(135deg,#cbd5e1 50%,transparent 50%);
+    background-position:calc(100% - 26px) 50%,calc(100% - 19px) 50%;background-size:7px 7px;background-repeat:no-repeat}
+  input:focus,select:focus{box-shadow:0 0 0 2px var(--orange)}
+  input::placeholder{color:var(--muted)}
+  input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .field+label{margin-top:18px}
+  .time{display:flex;align-items:center;gap:12px}
+  .time span{color:var(--orange);font-weight:900;font-size:1.5rem}
+  .btns{display:flex;gap:14px;margin-top:18px}
+  .btns button{flex:1;border-radius:10px;padding:13px 6px;font-size:1.05rem;font-weight:800;
+    font-family:inherit;cursor:pointer;background:var(--input);color:var(--text);border:1px solid #4b5563}
+  .btns button:active,.btns button.on{background:var(--orange);border-color:var(--orange)}
+  .note{font-size:.85rem;color:#9ca3af;margin-top:10px}
+  footer{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid #1f2937;
+    text-align:center;padding:14px 16px calc(14px + env(safe-area-inset-bottom))}
+  .total{font-size:2.3rem;font-weight:900}
+  .total #total{color:var(--orange);font-size:3.4rem}
+  .total small{color:var(--purple);font-size:1.6rem}
+  .nota{color:var(--purple);margin-top:2px;font-size:1.05rem}
+  .nota b{color:var(--orange)}
+  .apto{margin-top:4px;font-weight:800;font-size:.95rem}
+</style>
+</head>
+<body>
+<header>
+  <h1>ACADEMIA AJ</h1>
+  <p>TGCF</p>
+</header>
+
+<main>
+  <section class="card">
+    <label for="sexo">Sexo aspirante</label>
+    <select id="sexo" class="field">
+      <option value="M">Hombre (H)</option>
+      <option value="F">Mujer (M)</option>
+    </select>
+    <label for="edad">Edad exacta</label>
+    <input id="edad" type="number" inputmode="numeric" min="17" max="99" value="25">
+    <div class="btns">
+      <button id="bMin" type="button">MÍNIMOS</button>
+      <button id="bMax" type="button">MÁXIMOS</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="head"><span class="title">1. Flexo-extensiones</span><span class="pts" id="p_flexo">0 pts</span></div>
+    <input id="flexo" type="number" inputmode="numeric" min="0" placeholder="0">
+  </section>
+
+  <section class="card">
+    <div class="head"><span class="title">2. Plancha isométrica</span><span class="pts" id="p_plancha">0 pts</span></div>
+    <div class="time">
+      <input id="plancha_m" type="number" inputmode="numeric" min="0" placeholder="Min">
+      <span>:</span>
+      <input id="plancha_s" type="number" inputmode="numeric" min="0" max="59" placeholder="Seg">
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="head"><span class="title">3. Resistencia 2.000m</span><span class="pts" id="p_carrera">0 pts</span></div>
+    <div class="time">
+      <input id="carrera_m" type="number" inputmode="numeric" min="0" placeholder="Min">
+      <span>:</span>
+      <input id="carrera_s" type="number" inputmode="numeric" min="0" max="59" placeholder="Seg">
+    </div>
+  </section>
+
+  <section class="card" id="c_agilidad">
+    <div class="head"><span class="title">4. Agilidad-velocidad</span><span class="pts" id="p_agilidad">0 pts</span></div>
+    <input id="agilidad" type="text" inputmode="decimal" placeholder="Segundos (ej. 13,4)">
+    <div class="note" id="n_agilidad" hidden>Prueba solo para aspirantes de hasta 45 años.</div>
+  </section>
+</main>
+
+<footer>
+  <div class="total">TOTAL: <span id="total">0</span> <small>/ <span id="max">400</span> pts</small></div>
+  <div class="nota">Nota base (sobre 10): <b id="nota">0.00</b></div>
+  <div class="apto" id="apto"></div>
+</footer>
+
+<script src="tablas.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const MINIMO = 20; // puntuación mínima por prueba (casillas sombreadas en el BOE)
+
+function grupo(edad){
+  const lim=[25,30,35,40,45,50,55,59];
+  for(let i=0;i<lim.length;i++) if(edad<=lim[i]) return i;
+  return 8;
+}
+function col(test, g, sexo){
+  if(test==='plancha') return g;            // plancha: sin distinción de sexo
+  return g*2 + (sexo==='F'?1:0);
+}
+const fmtMS = s => Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+const fmtDec = t => (t/10).toFixed(1).replace('.',',');
+const num = v => v===''||v==null ? null : Number(v);
+
+// Más es mejor (flexo, plancha): primera fila (de mayor a menor) con marca <= valor
+function ptsMas(tabla, c, v){
+  for(const [k,vals] of tabla) if(v>=k) return vals[c];
+  return 0;
+}
+// Menos es mejor (carrera, agilidad): primera fila (de menor a mayor) con marca >= valor
+function ptsMenos(tabla, c, v){
+  if(v<=tabla[0][0]) return tabla[0][1][c];
+  for(const [k,vals] of tabla) if(v<=k) return vals[c];
+  return 0;
+}
+// Marca necesaria para conseguir al menos 'obj' puntos
+function marcaMas(tabla,c,obj){ let r=null; for(const [k,v] of tabla) if(v[c]>=obj) r=k; return r; }
+function marcaMenos(tabla,c,obj){ let r=null; for(const [k,v] of tabla) if(v[c]>=obj) r=k; return r; }
+
+function calc(){
+  const sexo=$('sexo').value;
+  const edad=Math.max(17, num($('edad').value)||17);
+  const g=grupo(edad);
+  const conAgilidad = edad<=45;
+  const res={};
+
+  // 1. Flexo
+  let c=col('flexo',g,sexo), v=num($('flexo').value);
+  res.flexo = v==null?null:ptsMas(TABLAS.flexo,c,v);
+
+  // 2. Plancha
+  c=col('plancha',g,sexo);
+  let mm=num($('plancha_m').value), ss=num($('plancha_s').value);
+  res.plancha = (mm==null&&ss==null)?null:ptsMas(TABLAS.plancha,c,(mm||0)*60+(ss||0));
+
+  // 3. Carrera
+  c=col('carrera',g,sexo);
+  mm=num($('carrera_m').value); ss=num($('carrera_s').value);
+  res.carrera = (mm==null&&ss==null)?null:ptsMenos(TABLAS.carrera,c,(mm||0)*60+(ss||0));
+
+  // 4. Agilidad (solo hasta 45 años)
+  $('c_agilidad').classList.toggle('off',!conAgilidad);
+  $('agilidad').disabled=!conAgilidad;
+  $('n_agilidad').hidden=conAgilidad;
+  if(conAgilidad){
+    c=col('agilidad',g,sexo);
+    const raw=$('agilidad').value.trim().replace(',','.');
+    const t = raw===''||isNaN(raw)?null:Math.ceil(Math.round(Number(raw)*1000)/100); // décimas, redondeo hacia arriba
+    res.agilidad = t==null?null:ptsMenos(TABLAS.agilidad,c,t);
+  }
+
+  const pruebas = conAgilidad?['flexo','plancha','carrera','agilidad']:['flexo','plancha','carrera'];
+  let total=0, suspende=false, completas=true;
+  for(const p of ['flexo','plancha','carrera','agilidad']){
+    const activa=pruebas.includes(p);
+    const val=activa?res[p]:null;
+    $('p_'+p).textContent=(val??0)+' pts';
+    $('p_'+p).classList.toggle('fail', val!=null && val<MINIMO);
+    if(!activa) continue;
+    if(val==null){completas=false; continue;}
+    total+=val; if(val<MINIMO) suspende=true;
+  }
+  const max=pruebas.length*100;
+  $('total').textContent=total;
+  $('max').textContent=max;
+  $('nota').textContent=(total/max*10).toFixed(2);
+  const apto=$('apto');
+  if(suspende){apto.textContent='NO APTO: alguna prueba por debajo de '+MINIMO+' pts';apto.style.color='var(--red)';}
+  else if(completas){apto.textContent='APTO';apto.style.color='var(--green)';}
+  else apto.textContent='';
+}
+
+// Botones: rellenan las marcas necesarias para el mínimo (20 pts) o el máximo (100 pts)
+function rellenar(obj, boton){
+  const sexo=$('sexo').value;
+  const edad=Math.max(17, num($('edad').value)||17);
+  const g=grupo(edad);
+  const f=marcaMas(TABLAS.flexo,col('flexo',g,sexo),obj);
+  const pl=marcaMas(TABLAS.plancha,col('plancha',g,sexo),obj);
+  const ca=marcaMenos(TABLAS.carrera,col('carrera',g,sexo),obj);
+  $('flexo').value=f??'';
+  $('plancha_m').value=pl==null?'':Math.floor(pl/60); $('plancha_s').value=pl==null?'':pl%60;
+  $('carrera_m').value=ca==null?'':Math.floor(ca/60); $('carrera_s').value=ca==null?'':ca%60;
+  if(edad<=45){
+    const ag=marcaMenos(TABLAS.agilidad,col('agilidad',g,sexo),obj);
+    $('agilidad').value=ag==null?'':fmtDec(ag);
+  } else $('agilidad').value='';
+  $('bMin').classList.toggle('on',boton==='bMin');
+  $('bMax').classList.toggle('on',boton==='bMax');
+  calc();
+}
+$('bMin').onclick=()=>rellenar(MINIMO,'bMin');
+$('bMax').onclick=()=>rellenar(100,'bMax');
+document.querySelectorAll('input,select').forEach(el=>el.addEventListener('input',()=>{$('bMin').classList.remove('on');$('bMax').classList.remove('on');calc();}));
+calc();
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js'));
+}
+</script>
+</body>
+</html>
