@@ -1,17 +1,13 @@
 {
-  "name": "TGCF - Academia AJ",
-  "short_name": "TGCF",
-  "description": "Calculadora de puntuación de las pruebas físicas TGCF",
-  "start_url": "./",
+  "name": "Calculadora de Permanencia",
+  "short_name": "Permanencia",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#111827",
-  "theme_color": "#7e22ce",
-  "lang": "es",
+  "background_color": "#ffffff",
+  "theme_color": "#1e6fd9",
   "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
   ]
 }
