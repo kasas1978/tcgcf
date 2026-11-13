@@ -1,6 +1,6 @@
 {
   "name": "TGCF",
-  "short_name": "tgcf",
+  "short_name": "TGCF",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
