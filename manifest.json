@@ -1,6 +1,6 @@
 {
   "name": "TGCF",
-  "short_name": "Permanencia",
+  "short_name": "tgcf",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
